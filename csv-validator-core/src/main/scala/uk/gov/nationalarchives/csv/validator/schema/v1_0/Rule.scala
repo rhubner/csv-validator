@@ -317,6 +317,8 @@ case class UniqueMultiRule(columns: List[ColumnReference]) extends Rule("unique(
 
 case class ChecksumRule(rootPath: ArgProvider, file: ArgProvider, algorithm: String, pathSubstitutions: List[(String,String)], enforceCaseSensitivePathChecks: Boolean = false) extends Rule("checksum", Seq(rootPath, file): _*) with FileWildcardSearch[String] {
 
+  val skipChecksum: Boolean = Try(System.getProperty("validator.skip.checksum", "false").toBoolean).getOrElse(false)
+
   def this(file: ArgProvider, algorithm: String, pathSubstitutions: List[(String,String)], enforceCaseSensitivePathChecks: Boolean) = this(Literal(None), file, algorithm, pathSubstitutions, enforceCaseSensitivePathChecks)
   def this(file: ArgProvider, algorithm: String, enforceCaseSensitivePathChecks: Boolean) = this(Literal(None), file, algorithm, List.empty[(String,String)], enforceCaseSensitivePathChecks)
 
@@ -324,6 +326,7 @@ case class ChecksumRule(rootPath: ArgProvider, file: ArgProvider, algorithm: Str
     val columnDefinition = schema.columnDefinitions(columnIndex)
 
     search(filename(columnIndex, row, schema)) match {
+      case _ if skipChecksum => true.successNel[String]
       case SuccessZ(hexValue: String) if hexValue == cellValue(columnIndex,row,schema) => true.successNel[String]
       case SuccessZ(hexValue: String) => s"""$toError file "${TypedPath(filename(columnIndex, row, schema)._1 + filename(columnIndex, row, schema)._2).toPlatform}" checksum match fails for line: ${row.lineNumber}, column: ${columnDefinition.id}, ${toValueError(row,columnIndex)}. Computed checksum value:"${hexValue}"""".failureNel[Any]
       case FailureZ(errMsg) => s"$toError ${errMsg.head} for line: ${row.lineNumber}, column: ${columnDefinition.id}, ${toValueError(row,columnIndex)}".failureNel[Any]
