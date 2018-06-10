@@ -67,7 +67,7 @@
                             <goal>analyze-only</goal>
                         </goals>
                         <configuration>
-                            <failOnWarning>false</failOnWarning>
+                            <failOnWarning>true</failOnWarning>
                         </configuration>
                     </execution>
                 </executions>
@@ -118,17 +118,18 @@
             <version>0.10.4</version>
         </dependency>
         <dependency>
-            <groupId>org.scalaz</groupId>
-            <artifactId>scalaz-concurrent_${scala.version}</artifactId>
-            <version>${scalaz.version}</version>
-        </dependency>
-        <dependency>
             <groupId>com.madgag</groupId>
             <artifactId>scala-io-file_${scala.version}</artifactId>
         </dependency>
         <dependency>
             <groupId>com.madgag</groupId>
             <artifactId>scala-io-core_${scala.version}</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.madgag</groupId>
+                    <artifactId>scala-arm_2.11</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.jsuereth</groupId>

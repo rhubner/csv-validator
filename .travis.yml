@@ -3,7 +3,7 @@ sudo: false
 language: scala
 
 scala:
-        - 2.12.3
+        - 2.11.8
 
 script: "mvn test verify -Dmaven.javadoc.skip=true"
 
