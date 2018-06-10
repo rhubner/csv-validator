@@ -67,7 +67,7 @@
                             <goal>analyze-only</goal>
                         </goals>
                         <configuration>
-                            <failOnWarning>true</failOnWarning>
+                            <failOnWarning>false</failOnWarning>
                         </configuration>
                     </execution>
                 </executions>
@@ -105,17 +105,17 @@
         <dependency>
             <groupId>org.typelevel</groupId>
             <artifactId>cats-effect_${scala.version}</artifactId>
-            <version>0.4</version>
+            <version>0.10.1</version>
         </dependency>
         <dependency>
             <groupId>co.fs2</groupId>
             <artifactId>fs2-core_${scala.version}</artifactId>
-            <version>0.10.0-M6</version>
+            <version>0.10.4</version>
         </dependency>
         <dependency>
             <groupId>co.fs2</groupId>
             <artifactId>fs2-io_${scala.version}</artifactId>
-            <version>0.10.0-M6</version>
+            <version>0.10.4</version>
         </dependency>
         <dependency>
             <groupId>org.scalaz</groupId>

@@ -148,7 +148,7 @@ trait MetaDataValidator {
             validateRows(rowIt, schema)
         }
 
-    }.either.either match {
+    }.either match {
       case Right(metadataValidation) =>
         metadataValidation
 
@@ -276,11 +276,11 @@ trait MetaDataValidator {
       inputStream.flatMap(stream => managed(new BOMInputStream(stream)))
     } else {
       inputStream
-    };
+    }
 
     val reader = bomInputStream.flatMap(stream => managed(new JInputStreamReader(stream, textFile.encoding)));
 
-    reader.map(fn).either.either match {
+    reader.map(fn).either match {
       case Left(ioError) =>
         throw ioError(0)
       case Right(result) =>
